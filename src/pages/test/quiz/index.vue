@@ -150,7 +150,7 @@ function completeTest() {
   console.log('测试完成，答案:', userAnswers.value)
   uni.showToast({
     title: '测试完成',
-    icon: 'success'
+    icon: 'success',
   })
 }
 </script>
@@ -234,30 +234,31 @@ function completeTest() {
             </text>
           </view>
         </view>
-      </view>
-    </view>
 
-    <!-- 底部导航按钮 -->
-    <view v-if="!loading && currentQuestion" class="bottom-nav">
-      <view class="nav-buttons">
-        <!-- 上一题按钮 -->
-        <view
-          class="nav-btn prev-btn"
-          :class="{ 'btn-disabled': !canGoPrev }"
-          @tap="prevQuestion"
-        >
-          <text class="btn-text">上一题</text>
-        </view>
+        <!-- 集成导航区域 -->
+        <view class="card-navigation">
+          <!-- 上一题按钮 -->
+          <view
+            class="card-nav-btn prev-btn"
+            :class="{ 'nav-disabled': !canGoPrev }"
+            @tap="prevQuestion"
+          >
+            <text class="nav-icon">←</text>
+          </view>
 
-        <!-- 下一题/完成按钮 -->
-        <view
-          class="nav-btn next-btn"
-          :class="{ 'btn-disabled': !canGoNext }"
-          @tap="progress === totalQuestions ? completeTest() : nextQuestion"
-        >
-          <text class="btn-text">
-            {{ progress === totalQuestions ? '完成测试' : '下一题' }}
-          </text>
+          <!-- 进度指示器 -->
+          <!-- <view class="progress-indicator">
+            <text class="progress-text">{{ progress }}/{{ totalQuestions }}</text>
+          </view> -->
+
+          <!-- 下一题/完成按钮 -->
+          <view
+            class="card-nav-btn next-btn"
+            :class="{ 'nav-disabled': !canGoNext }"
+            @tap="progress === totalQuestions ? completeTest() : nextQuestion"
+          >
+            <text class="nav-icon">{{ progress === totalQuestions ? '✓' : '→' }}</text>
+          </view>
         </view>
       </view>
     </view>
@@ -441,7 +442,7 @@ function completeTest() {
 .question-section {
   position: relative;
   z-index: 10;
-  padding: 0 20px;
+  padding: 0 20px 40px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -494,6 +495,99 @@ function completeTest() {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-bottom: 24px;
+}
+
+/* 集成导航区域 */
+.card-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 8px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.card-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.prev-btn {
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.prev-btn:not(.nav-disabled):active {
+  transform: scale(0.95);
+  background: rgba(102, 126, 234, 0.15);
+}
+
+.next-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 1px solid transparent;
+}
+
+.next-btn:not(.nav-disabled):active {
+  transform: scale(0.95);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.nav-icon {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.prev-btn .nav-icon {
+  color: #667eea;
+}
+
+.next-btn .nav-icon {
+  color: white;
+}
+
+.nav-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.prev-btn .nav-text {
+  color: #667eea;
+}
+
+.next-btn .nav-text {
+  color: white;
+}
+
+.nav-disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.nav-disabled:active {
+  transform: none;
+}
+
+.progress-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 20px;
+}
+
+.progress-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #4a5568;
 }
 
 .option-item {
@@ -550,68 +644,5 @@ function completeTest() {
 .option-item.option-selected .option-text {
   color: #2d3748;
   font-weight: 600;
-}
-
-/* 底部导航 */
-.bottom-nav {
-  position: relative;
-  z-index: 10;
-  padding: 24px 20px 40px;
-  background: white;
-  border-top: 1px solid #e2e8f0;
-}
-
-.nav-buttons {
-  display: flex;
-  gap: 16px;
-}
-
-.nav-btn {
-  flex: 1;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.prev-btn {
-  background: #f8fafc;
-  border: 2px solid #e2e8f0;
-}
-
-.prev-btn .btn-text {
-  color: #718096;
-}
-
-.prev-btn:active {
-  transform: scale(0.98);
-}
-
-.next-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border: 2px solid transparent;
-}
-
-.next-btn .btn-text {
-  color: white;
-}
-
-.next-btn:active {
-  transform: scale(0.98);
-}
-
-.btn-disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.btn-disabled:active {
-  transform: none;
 }
 </style>
