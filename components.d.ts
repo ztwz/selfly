@@ -7,11 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    AButton: typeof import('ano-ui/components/AButton/AButton.vue')['default']
-    ANoticeBar: typeof import('ano-ui/components/ANoticeBar/ANoticeBar.vue')['default']
-    ANotify: typeof import('ano-ui/components/ANotify/ANotify.vue')['default']
     AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     AppLogos: typeof import('./src/components/AppLogos.vue')['default']
     InputEntry: typeof import('./src/components/InputEntry.vue')['default']
+    ProgressBar: typeof import('./src/components/ProgressBar.vue')['default']
+    QuestionItem: typeof import('./src/components/QuestionItem.vue')['default']
+    TestCard: typeof import('./src/components/TestCard.vue')['default']
   }
 }

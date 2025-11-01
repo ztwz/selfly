@@ -32,7 +32,6 @@
     "@uni-helper/uni-use": "^0.19.15",
     "@vueuse/core": "9.13.0",
     "ano-ui": "^0.9.2",
-    "pinia": "2.2.4",
     "vue": "3.4.21",
     "vue-i18n": "9.6.2",
     "vue-router": "4.5.1"

@@ -1,0 +1,224 @@
+/**
+ * 全局样式和主题变量
+ */
+
+// 颜色变量
+:root {
+  // 主色调
+  --primary-color: #6366f1;      // 靛蓝色 - 理性和洞察
+  --primary-light: #818cf8;      // 浅靛蓝
+  --primary-dark: #4f46e5;       // 深靛蓝
+
+  // 辅助色
+  --secondary-color: #ec4899;    // 粉红色 - 情感和温暖
+  --secondary-light: #f472b6;    // 浅粉红
+  --secondary-dark: #db2777;     // 深粉红
+
+  // 功能色
+  --success-color: #10b981;      // 成功绿
+  --warning-color: #f59e0b;      // 警告橙
+  --error-color: #ef4444;        // 错误红
+  --info-color: #3b82f6;         // 信息蓝
+
+  // 中性色
+  --bg-color: #f8fafc;           // 背景色
+  --bg-color-secondary: #f1f5f9; // 次要背景色
+  --border-color: #e2e8f0;       // 边框色
+  --text-color: #1e293b;         // 主文字色
+  --text-color-secondary: #64748b; // 次要文字色
+  --text-color-tertiary: #94a3b8; // 三级文字色
+
+  // 阴影
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+  // 圆角
+  --radius-sm: 8px;              // 小圆角
+  --radius-md: 12px;             // 中圆角
+  --radius-lg: 16px;             // 大圆角
+  --radius-full: 9999px;         // 满圆角
+
+  // 间距 (使用4px基础单位)
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+
+  // 字体大小
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 16px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-4xl: 36px;
+
+  // 行高
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  // 动画时长
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+}
+
+// 暗色主题
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #0f172a;
+    --bg-color-secondary: #1e293b;
+    --border-color: #334155;
+    --text-color: #f8fafc;
+    --text-color-secondary: #cbd5e1;
+    --text-color-tertiary: #94a3b8;
+  }
+}
+
+// 全局重置
+view, text, image, button, input, textarea, navigator, swiper, swiper-item, scroll-view, icon, progress, slider, switch, checkbox, radio, form, label, picker, picker-view, picker-view-column, navigator, audio, video, camera, live-player, live-pusher, map, canvas, web-view, rich-text, movable-area, movable-view, cover-view, cover-image, ad, official-account, open-data, web-view {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+page {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+// 通用工具类
+.container {
+  padding: var(--spacing-md);
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-primary {
+  color: var(--primary-color);
+}
+
+.text-secondary {
+  color: var(--text-color-secondary);
+}
+
+.bg-white {
+  background-color: white;
+}
+
+.bg-primary {
+  background-color: var(--primary-color);
+}
+
+.rounded-sm {
+  border-radius: var(--radius-sm);
+}
+
+.rounded-md {
+  border-radius: var(--radius-md);
+}
+
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+
+.shadow-sm {
+  box-shadow: var(--shadow-sm);
+}
+
+.shadow-md {
+  box-shadow: var(--shadow-md);
+}
+
+.shadow-lg {
+  box-shadow: var(--shadow-lg);
+}
+
+// 过渡动画
+.transition {
+  transition: all var(--duration-normal) ease-in-out;
+}
+
+.transition-fast {
+  transition: all var(--duration-fast) ease-in-out;
+}
+
+.transition-slow {
+  transition: all var(--duration-slow) ease-in-out;
+}
+
+// 卡片样式
+.card {
+  background-color: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-md);
+  transition: all var(--duration-normal) ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+// 按钮基础样式
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  text-align: center;
+  transition: all var(--duration-fast) ease-in-out;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}

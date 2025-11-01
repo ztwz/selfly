@@ -3,6 +3,13 @@
     {
       "path": "pages/index",
       "type": "home"
+    },
+    {
+      "path": "pages/test/quiz/index",
+      "style": {
+        "navigationStyle": "custom",
+        "backgroundColor": "#f7fafc"
+      }
     }
   ],
   "globalStyle": {
