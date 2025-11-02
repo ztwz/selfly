@@ -10,6 +10,13 @@
         "navigationStyle": "custom",
         "backgroundColor": "#f7fafc"
       }
+    },
+    {
+      "path": "pages/test/result/index",
+      "style": {
+        "navigationStyle": "custom",
+        "backgroundColor": "#f7fafc"
+      }
     }
   ],
   "globalStyle": {

@@ -4,6 +4,7 @@
 -->
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
+import mbtiData from '@/data/93.json'
 
 // 页面状态
 const loading = ref(true)
@@ -13,61 +14,19 @@ const testId = ref<string>('')
 // 当前题目索引
 const currentQuestionIndex = ref(0)
 
-// 模拟题目数据
-const mockQuestions = [
-  {
-    id: 'q1',
-    testId: 'pdp',
-    type: 'single',
-    title: '在社交场合中，你通常是：',
-    options: [
-      { id: 'q1_opt1', text: '主动与人交谈，容易成为焦点', value: 5 },
-      { id: 'q1_opt2', text: '比较内向，喜欢观察', value: 1 },
-      { id: 'q1_opt3', text: '看情况而定，会适应环境', value: 3 },
-    ],
-    required: true,
-    sortOrder: 1,
-  },
-  {
-    id: 'q2',
-    testId: 'pdp',
-    type: 'single',
-    title: '面对工作中的挑战，你倾向于：',
-    options: [
-      { id: 'q2_opt1', text: '直接面对，快速解决', value: 5 },
-      { id: 'q2_opt2', text: '仔细分析，制定计划', value: 2 },
-      { id: 'q2_opt3', text: '寻求团队合作', value: 4 },
-      { id: 'q2_opt4', text: '避免冲突，寻求和谐', value: 1 },
-    ],
-    required: true,
-    sortOrder: 2,
-  },
-  {
-    id: 'q3',
-    testId: 'pdp',
-    type: 'single',
-    title: '在做决定时，你更依赖：',
-    options: [
-      { id: 'q3_opt1', text: '直觉和感觉', value: 4 },
-      { id: 'q3_opt2', text: '逻辑分析', value: 2 },
-      { id: 'q3_opt3', text: '他人意见', value: 3 },
-      { id: 'q3_opt4', text: '过往经验', value: 1 },
-    ],
-    required: true,
-    sortOrder: 3,
-  },
-]
+// 用户答案记录
+const userAnswers = ref<Record<string, string>>({})
 
-// 用户答案
-const userAnswers = ref<Record<string, number>>({})
+// MBTI测试数据
+const mbtiQuestions = ref<any[]>(mbtiData)
 
 // 计算属性
 const currentQuestion = computed(() => {
-  return mockQuestions[currentQuestionIndex.value] || null
+  return mbtiQuestions.value[currentQuestionIndex.value] || null
 })
 
 const totalQuestions = computed(() => {
-  return mockQuestions.length
+  return mbtiQuestions.value.length
 })
 
 const progress = computed(() => {
@@ -83,8 +42,8 @@ const progressPercent = computed(() => {
 const canGoNext = computed(() => {
   if (!currentQuestion.value)
     return false
-  const answer = userAnswers.value[currentQuestion.value.id]
-  return answer !== undefined && answer !== null
+  const answer = userAnswers.value[currentQuestion.value.number.toString()]
+  return answer !== undefined && answer !== null && answer !== ''
 })
 
 const canGoPrev = computed(() => {
@@ -99,20 +58,20 @@ onMounted(() => {
   const options = currentPage.options as any
 
   console.log('页面参数:', options)
-  console.log('题目数据:', mockQuestions)
+  console.log('MBTI数据加载成功，共', mbtiQuestions.value.length, '题')
 
   if (options.testId) {
     testId.value = options.testId
     console.log('测试ID:', testId.value)
   }
 
-  // 模拟加载测试数据
+  // 模拟加载延迟
   setTimeout(() => {
     loading.value = false
     console.log('加载完成，loading:', loading.value)
     console.log('当前题目:', currentQuestion.value)
     console.log('总题目数:', totalQuestions.value)
-  }, 500) // 缩短加载时间
+  }, 500)
 })
 
 // 选择答案
@@ -120,8 +79,21 @@ function selectOption(optionIndex: number) {
   selectedOption.value = optionIndex
   // 保存答案
   if (currentQuestion.value) {
-    userAnswers.value[currentQuestion.value.id] = optionIndex
-    console.log('保存答案:', currentQuestion.value.id, optionIndex)
+    const option = currentQuestion.value.options[optionIndex]
+    userAnswers.value[currentQuestion.value.number.toString()] = option.score
+    console.log('保存答案:', currentQuestion.value.number, option.score)
+
+    // 如果是最后一题，直接完成测试
+    if (currentQuestionIndex.value === totalQuestions.value - 1) {
+      setTimeout(() => {
+        completeTest()
+      }, 300)
+    } else {
+      // 自动跳转到下一题
+      setTimeout(() => {
+        nextQuestion()
+      }, 300) // 添加300ms延迟，让用户能看到选择效果
+    }
   }
 }
 
@@ -131,26 +103,114 @@ function prevQuestion() {
     currentQuestionIndex.value--
     // 恢复之前的选择
     if (currentQuestion.value) {
-      const savedAnswer = userAnswers.value[currentQuestion.value.id]
-      selectedOption.value = savedAnswer !== undefined ? savedAnswer : null
+      const savedScore = userAnswers.value[currentQuestion.value.number.toString()]
+      if (savedScore) {
+        // 找到对应的选项索引
+        const optionIndex = currentQuestion.value.options.findIndex(
+          (opt: any) => opt.score === savedScore,
+        )
+        selectedOption.value = optionIndex !== -1 ? optionIndex : null
+      }
+      else {
+        selectedOption.value = null
+      }
     }
   }
 }
 
 // 下一题
 function nextQuestion() {
-  if (canGoNext.value && currentQuestionIndex.value < totalQuestions.value - 1) {
+  if (currentQuestionIndex.value < totalQuestions.value - 1) {
     currentQuestionIndex.value++
     selectedOption.value = null
+  }
+}
+
+// 计算MBTI结果
+function calculateMBTIResult() {
+  // 统计各个维度的得分
+  const scores = {
+    E: 0, // 外向
+    I: 0, // 内向
+    S: 0, // 感觉
+    N: 0, // 直觉
+    T: 0, // 思考
+    F: 0, // 情感
+    J: 0, // 判断
+    P: 0, // 感知
+  }
+
+  // 遍历所有答案，统计得分
+  Object.values(userAnswers.value).forEach((score) => {
+    if (score && typeof score === 'string') {
+      scores[score as keyof typeof scores]++
+    }
+  })
+
+  // 确定每个维度的类型
+  const result = {
+    E_I: scores.E > scores.I ? 'E' : 'I', // 外向/内向
+    S_N: scores.S > scores.N ? 'S' : 'N', // 感觉/直觉
+    T_F: scores.T > scores.F ? 'T' : 'F', // 思考/情感
+    J_P: scores.J > scores.P ? 'J' : 'P', // 判断/感知
+  }
+
+  // 生成MBTI类型
+  const mbtiType = result.E_I + result.S_N + result.T_F + result.J_P
+
+  console.log('MBTI得分统计:', scores)
+  console.log('MBTI结果:', mbtiType)
+
+  return {
+    type: mbtiType,
+    scores,
+    result,
   }
 }
 
 // 完成测试
 function completeTest() {
   console.log('测试完成，答案:', userAnswers.value)
-  uni.showToast({
+  console.log('答案数量:', Object.keys(userAnswers.value).length)
+  console.log('总题目数:', totalQuestions.value)
+
+  // 确保所有题目都有答案
+  if (Object.keys(userAnswers.value).length < totalQuestions.value) {
+    console.log('警告：有未完成的题目')
+    uni.showToast({
+      title: '请完成所有题目',
+      icon: 'none'
+    })
+    return
+  }
+
+  // 计算MBTI结果
+  const result = calculateMBTIResult()
+  console.log('计算结果:', result)
+
+  // 显示结果确认
+  uni.showModal({
     title: '测试完成',
-    icon: 'success',
+    content: `你的MBTI性格类型是：${result.type}`,
+    showCancel: false,
+    confirmText: '查看详情',
+    success: () => {
+      console.log('用户点击查看详情，准备跳转')
+      // 跳转到结果页面
+      uni.navigateTo({
+        url: `/pages/test/result/index?type=${result.type}&scores=${encodeURIComponent(JSON.stringify(result.scores))}`,
+        success: () => {
+          console.log('跳转成功')
+        },
+        fail: (err) => {
+          console.error('跳转失败:', err)
+          uni.showToast({
+            title: '跳转失败，请重试',
+            icon: 'none'
+          })
+        }
+      })
+    },
   })
 }
 </script>
@@ -204,16 +264,16 @@ function completeTest() {
     <view v-else-if="currentQuestion" class="question-section">
       <view class="question-card">
         <!-- 题目编号 -->
-        <view class="question-number">
+        <!-- <view class="question-number">
           <text class="number-text">
             {{ progress }}
           </text>
-        </view>
+        </view> -->
 
         <!-- 题目内容 -->
         <view class="question-content">
           <text class="question-text">
-            {{ currentQuestion.title }}
+            {{ currentQuestion.question }}
           </text>
         </view>
 
@@ -221,7 +281,7 @@ function completeTest() {
         <view class="options-list">
           <view
             v-for="(option, index) in currentQuestion.options"
-            :key="option.id"
+            :key="index"
             class="option-item"
             :class="{ 'option-selected': selectedOption === index }"
             @tap="selectOption(index)"
