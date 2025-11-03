@@ -22,11 +22,11 @@ const categories = [
 const tests = [
   {
     id: 1,
-    title: 'PDP动物性格',
-    subtitle: '发现你的内在动物性格',
+    title: 'PDP动物性格测试',
+    subtitle: '发现你内在的动物性格',
     icon: '🐅',
     color: '#667eea',
-    bgColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    bgColor: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
     tags: ['性格', '热门'],
     participants: '12.3k',
     time: '8分钟',
@@ -37,8 +37,8 @@ const tests = [
     title: 'MBTI人格测试',
     subtitle: '探索你的16型人格',
     icon: '🎭',
-    color: '#f56565',
-    bgColor: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+    color: '#3B82F6',
+    bgColor: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)',
     tags: ['人格', '专业'],
     participants: '8.7k',
     time: '12分钟',
@@ -46,27 +46,27 @@ const tests = [
   },
   {
     id: 3,
-    title: '爱情语言测试',
-    subtitle: '发现你的爱情表达方式',
-    icon: '💝',
-    color: '#ed64a6',
-    bgColor: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-    tags: ['情感', '热门'],
+    title: '真实年龄测试',
+    subtitle: '测测你的心理年龄',
+    icon: '🎂',
+    color: '#8B5CF6',
+    bgColor: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)',
+    tags: ['趣味', '热门'],
     participants: '15.2k',
     time: '6分钟',
     difficulty: '简单',
   },
   {
     id: 4,
-    title: '隐藏人格测试',
-    subtitle: '揭示你内心的真实面貌',
-    icon: '👤',
-    color: '#4299e1',
-    bgColor: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    tags: ['心理', '深度'],
+    title: '爱情语言测试',
+    subtitle: '发现你的爱情表达方式',
+    icon: '💝',
+    color: '#3B82F6',
+    bgColor: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)',
+    tags: ['情感', '热门'],
     participants: '6.8k',
-    time: '15分钟',
-    difficulty: '困难',
+    time: '10分钟',
+    difficulty: '简单',
   },
 ]
 
@@ -236,7 +236,7 @@ function startTest(testId: number) {
 <style lang="scss" scoped>
 .home-container {
   min-height: 100vh;
-  background: linear-gradient(180deg, #f7fafc 0%, #edf2f7 100%);
+  background: #F8F9FA;
   position: relative;
   overflow: hidden;
 }
@@ -261,7 +261,7 @@ function startTest(testId: number) {
 .circle-1 {
   width: 200px;
   height: 200px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
   top: -50px;
   right: -50px;
   animation: float 6s ease-in-out infinite;
@@ -270,7 +270,7 @@ function startTest(testId: number) {
 .circle-2 {
   width: 150px;
   height: 150px;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
   top: 30%;
   left: -30px;
   animation: float 8s ease-in-out infinite;
@@ -279,7 +279,7 @@ function startTest(testId: number) {
 .circle-3 {
   width: 120px;
   height: 120px;
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
   bottom: 20%;
   right: -20px;
   animation: float 7s ease-in-out infinite;
@@ -420,28 +420,29 @@ function startTest(testId: number) {
 .test-section {
   position: relative;
   z-index: 10;
-  padding: 0 20px 80px;
+  padding: 0 16px 80px;
 }
 
 .test-grid {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
 .test-card {
   position: relative;
-  min-height: 200px;
-  border-radius: 24px;
+  width: 100%;
+  height: 220px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .test-card:active {
-  transform: scale(0.98);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: scale(0.97);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .card-bg {
